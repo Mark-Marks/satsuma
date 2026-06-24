@@ -17,7 +17,7 @@ My summer networking library
 **Satsuma** is an ergonomic, probably pretty fast networking library. The main differences (and benefits) compared to others come via:
 - Deferring all networking processing to a special networking tick
 - Minimizing allocations as much as possible
-- An extendible, stupidly fast 2k LOC serdes library derived from [holy](https://github.com/hardlyardi/light/blob/d171ee866923c61c9490913d6b8f4cada884835b/src/utils/holy.luau#L685)
+- An extendible, stupidly fast 2k LOC serdes library derived from [holy](https://gist.github.com/hardlyardi/3ec65bd533b37095a48b3afadb08626c)
 - A more data-oriented rather than object-oriented approach
 
 &nbsp;

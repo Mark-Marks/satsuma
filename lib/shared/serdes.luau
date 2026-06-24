@@ -1,6 +1,6 @@
 --!optimize 2
 --[[
-    Some serdes code is taken from holy, a serdes library https://github.com/hardlyardi/light/blob/d171ee866923c61c9490913d6b8f4cada884835b/src/utils/holy.luau
+    Some serdes code is taken from holy, a serdes library https://gist.github.com/hardlyardi/3ec65bd533b37095a48b3afadb08626c
     Holy's license is as below:
 
     MIT License
