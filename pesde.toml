@@ -5,7 +5,6 @@ authors = ["marked"]
 repository = "https://github.com/mark-marks/satsuma"
 license = "MIT"
 includes = ["lib", "lib/**", "LICENSE", "pesde.toml", "README.md"]
-private = true
 
 [target]
 environment = "roblox"
