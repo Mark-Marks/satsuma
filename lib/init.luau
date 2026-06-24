@@ -1,8 +1,9 @@
-const client = require("@self/client")
-const server = require("@self/server")
-const declare_event = require("@self/shared/declare_event")
-const serdes = require("@self/shared/serdes")
-const types = require("@self/shared/types")
+-- TODO: Change these imports to local in the future once pesde gets support for it or an official Luau package manager everyone switches to comes out
+local client = require("@self/client")
+local declare_event = require("@self/shared/declare_event")
+local serdes = require("@self/shared/serdes")
+local server = require("@self/server")
+local types = require("@self/shared/types")
 
 export type EventId = types.EventId
 export type SerdesId<T = unknown> = types.SerdesId<T>
