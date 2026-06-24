@@ -32,7 +32,7 @@ const function fast_spawn<T..., R...>(callback: (T...) -> R..., ...: T...)
         free_thread = task.spawn(yield_loop)
     end
 
-    task.spawn(free_thread :: thread, ...)
+    task.spawn(free_thread :: thread, callback, ...)
 end
 
 return fast_spawn
