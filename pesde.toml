@@ -1,0 +1,16 @@
+name = "marked/satsuma"
+version = "0.1.0-alpha.0"
+description = "My summer networking library"
+authors = ["marked"]
+repository = "https://github.com/mark-marks/satsuma"
+license = "MIT"
+includes = ["lib", "lib/**", "LICENSE", "pesde.toml", "README.md"]
+private = true
+
+[target]
+environment = "roblox"
+lib = "lib/init.luau"
+build_files = ["lib"]
+
+[indices]
+default = "https://github.com/pesde-pkg/index"

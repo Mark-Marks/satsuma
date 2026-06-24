@@ -1,0 +1,6 @@
+std = "selene_definitions"
+exclude = []
+
+[lints]
+incorrect_standard_library_use = "allow"
+global_usage = "allow"
