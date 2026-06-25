@@ -37,7 +37,7 @@ const function declare_event<T>(declaration: {
 
     return table.freeze {
         id = types.insert_ghost<<EventId>>(current_event_id),
-        serdes = declaration.data_type,
+        serdes = serdes.convert_tables(declaration.data_type),
         bucket = table.freeze {
             capacity = declaration.call_budget,
             refill_rate = declaration.budget_refill,
