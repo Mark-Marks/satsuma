@@ -15,7 +15,7 @@ local current_event_id = 0
 --- Accepts a setting to set the event to receiving data via polling, instead of callbacks.
 --- Accepts a packet byte size limit, which defaults to 8000 bytes and is limited to 2^16-1, the limit of an uint8. This limit will automatically change to the static size of the data calculated by the serdes library, if it exists. Elsewise, if a static size doesn't exist, you should set a sane limit yourself to both keep the remote from being exploited to DDOS the server, and let all of the data you need to pass through and be processed.
 const function declare_event<T>(declaration: {
-    data_type: serdes.Id<T>,
+    data_type: T,
     call_budget: number,
     budget_refill: number,
     use_polling: boolean?,
@@ -42,7 +42,7 @@ const function declare_event<T>(declaration: {
             capacity = declaration.call_budget,
             refill_rate = declaration.budget_refill,
         },
-        use_polling = declaration.iterable or false,
+        use_polling = declaration.use_polling or false,
         max_packet_size = max_packet_size,
     }
 end
