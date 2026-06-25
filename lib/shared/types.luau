@@ -200,7 +200,7 @@ export type Reference = number & { __DISTINCT: "reference" }
 
 export type Event<T = unknown> = {
     read id: EventId,
-    read serdes: SerdesId<T>,
+    read serdes: SerdesId<reveal_type<T>>,
     read bucket: {
         read capacity: number,
         read refill_rate: number,
@@ -212,6 +212,13 @@ export type Event<T = unknown> = {
 export type Namespace = {
     [string]: Event | Namespace,
 }
+
+export type function extract_my_god_damned_data(t: type)
+    const s = t:readproperty(types.singleton("serdes"))
+    assert(s)
+
+    return reveal_type(s)
+end
 
 const helpers = table.freeze {
     strip_ghost = strip_ghost,

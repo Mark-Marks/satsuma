@@ -176,6 +176,19 @@ satsuma.connect(server, events.meta.get_ready, function(player)
 end)
 ```
 
+> [!TIP]
+> In order to get proper types for the connect function, you have to use the supplied `extract` type function and explicit generic instantiation.\
+> This is due to a bug with bidirectional inference in the new solver: see [luau-lang/luau#2428](https://github.com/luau-lang/luau/issues/2428)
+> ```luau
+> const _satsuma = require("@pkg/satsuma")
+> const satsuma = _satsuma.server
+>
+> -- Without the instantiation, data gets typed as unknown here
+> satsuma.connect<<_satsuma.extract<typeof(events.my_event)>>>(server, events.my_event, function(data)
+> ...
+> end)
+> ```
+
 On the other hand, for polling based events, the server and the client make use of two, slightly varying methods.
 The client trusts the server not to send any events it's way which won't be used. On the other hand, the server may be getting malicious events which, if processed, would be wasting the server's processing time.
 Because of that, the server needs a way in which it could be signalled that an event will be used, and therefore should be accepted and processed.

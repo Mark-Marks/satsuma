@@ -11,7 +11,10 @@ export type Reference = types.Reference
 export type Event<T = unknown> = types.Event<T>
 export type Namespace = types.Namespace
 
-export type reveal_type<T> = types.reveal_type<T>
+--- Reveals the type of a serdes id
+export type reveal<T> = types.reveal_type<T>
+--- Extracts the type of an event
+export type extract<T> = types.extract_my_god_damned_data<T>
 
 return {
     client = client,

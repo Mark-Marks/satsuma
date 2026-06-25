@@ -20,7 +20,7 @@ const function declare_event<T>(declaration: {
     budget_refill: number,
     use_polling: boolean?,
     max_packet_size: number?,
-}): Event<T>
+}): Event<types.reveal_type<T>>
     current_event_id += 1
 
     local max_packet_size: number? = static_sizes[declaration.data_type]
@@ -47,4 +47,40 @@ const function declare_event<T>(declaration: {
     }
 end
 
-return declare_event
+--- Luau: https://github.com/luau-lang/luau/issues/1947
+--- This is literally 1947...
+type HackyBullshitDefinitionPleaseFix =
+    (<T>(
+        declaration: {
+            data_type: T,
+            call_budget: number,
+            budget_refill: number,
+        }
+    ) -> Event<types.reveal_type<T>>)
+    & (<T>(
+        declaration: {
+            data_type: T,
+            call_budget: number,
+            budget_refill: number,
+            use_polling: boolean,
+        }
+    ) -> Event<types.reveal_type<T>>)
+    & (<T>(
+        declaration: {
+            data_type: T,
+            call_budget: number,
+            budget_refill: number,
+            max_packet_size: number,
+        }
+    ) -> Event<types.reveal_type<T>>)
+    & (<T>(
+        declaration: {
+            data_type: T,
+            call_budget: number,
+            budget_refill: number,
+            use_polling: boolean,
+            max_packet_size: number,
+        }
+    ) -> Event<types.reveal_type<T>>)
+
+return declare_event :: HackyBullshitDefinitionPleaseFix
