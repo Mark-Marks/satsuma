@@ -95,12 +95,11 @@ const function initialize(
             )
             ratelimit_bucket_templates[event_id] = table.freeze(bucket_template)
             max_packet_sizes[event_id] = event.max_packet_size
-            incoming_polling_queues[event_id] =
-                table_create<<PollPacket>>(DEFAULT_POLLING_QUEUE_SIZE)
 
             @native
             const function iterator(): () -> (number, Player, unknown)
-                const polling_queue = incoming_polling_queues[event_id]
+                const polling_queue: { PollPacket } =
+                    incoming_polling_queues[event_id]
                 const size = #polling_queue
                 local index = 0
 
@@ -193,13 +192,15 @@ const function connect<T>(
     server.id_callback_map[id] = callback
 end
 
---- Iterates over all received data from this event queued since last iteration.
+--- Fetches an iterator over all un-iterated, received data for this event.
+--- This function only has to be called once, and doesn't need to be called again to get an iterator over fresh data.
+--- All data received for this event prior to this function being called will be dropped.
 --- Mutually exclusive with server::connect, and only available if the event is specified to use polling.
 @native
-const function iterate<T>(
+const function fetch_iterator<T>(
     server: Server,
     event: types.Event<T>
-): () -> (number, Player, T)
+): () -> () -> (number, Player, T)
     const id = event.id
     const iterator: Iterator<T> = server.polling_iterators[id]
     if not iterator then
@@ -208,7 +209,12 @@ const function iterate<T>(
         )
     end
 
-    return iterator()
+    if server.incoming_polling_queues[id] == nil then
+        server.incoming_polling_queues[id] =
+            table_create<<PollPacket>>(DEFAULT_POLLING_QUEUE_SIZE)
+    end
+
+    return iterator
 end
 
 --- Fires the event with the provided data through a reliable remote event to the specified list of players.
@@ -785,7 +791,7 @@ return table.freeze {
     initialize = initialize,
 
     connect = connect,
-    iterate = iterate,
+    fetch_iterator = fetch_iterator,
 
     send = send,
     broadcast = broadcast,

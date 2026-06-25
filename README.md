@@ -160,7 +160,7 @@ return {
 ```
 Not all datatypes which Satsuma provides were covered above, although it's a fair introduction.
 
-Receiving data of an event is the same on both the client and the server, making use of `client.connect` / `client.iter` and `server.connect` / `server.iter` espectively.
+Receiving data of an event via a callback is the same on both the client and the server, making use of `client.connect` and `server.connect` espectively.
 The only difference, is that on the server a player whom the event has been sent by is provided.
 Keep in mind that events without `use_polling` enabled cannot be iterated over, and events with `use_polling` enabled cannot be connected to.
 A limit of one connection per event exists. You may bypass this by using a signal.
@@ -174,9 +174,25 @@ const events = require("@shared/events")
 satsuma.connect(server, events.meta.get_ready, function(player)
     print(`{player} is now ready!`)
 end)
+```
 
-for _, player, data in satsuma.iterate(server, events.my_event) do
-    print(data)
+On the other hand, for polling based events, the server and the client make use of two, slightly varying methods.
+The client trusts the server not to send any events it's way which won't be used. On the other hand, the server may be getting malicious events which, if processed, would be wasting the server's processing time.
+Because of that, the server needs a way in which it could be signalled that an event will be used, and therefore should be accepted and processed.
+This happens naturally via the `server.connect` function, as no callback exists before it's called, and so events may be dropped. However, with iteration, for performance reasons all iterators are set-up before hand, while the server is being initialized.
+Therefore, as a way to perform the aforementioned signalling, the server code necessitates the fetching of the iterator first:
+```luau
+-- Server
+
+const iterator = satsuma.fetch_iterator(server, events.my_event)
+for _, player, data in iterator() do
+    ...
+end
+
+-- Client
+
+for _, data in satsuma.iterate(client, events.my_event) do
+    ...
 end
 ```
 
